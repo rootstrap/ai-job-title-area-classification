@@ -1,3 +1,5 @@
+import pickle
+
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.neural_network import MLPClassifier
@@ -30,6 +32,10 @@ X_test_counts = count_vect.transform(X_test)
 X_test_tfidf = tfidf_transformer.transform(X_test_counts)
 test_predict = clf.predict(X_test_tfidf)
 print(metrics.classification_report(y_test, test_predict, target_names=list(area_label_value_dict.keys())))
+
+# Store the classifier in a .pkl file
+with open('mlp.pkl', 'wb') as mlpfile:
+    pickle.dump(clf, mlpfile)
 
 # Classify 1000 new examples
 with open('example_titles.csv') as f:
