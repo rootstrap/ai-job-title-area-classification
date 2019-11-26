@@ -1,4 +1,4 @@
-# Classification of job positions
+# Classification of job positions by area
 This is a project to classify job positions using machine learning, more specifically, supervised learning. The main goal is to get a classifier
 that receives a job position in the form of a sentence, for example `CEO and Founder` and returns the job area for that position. The different areas (labels for the classification) are:  
 * Business
@@ -7,10 +7,13 @@ that receives a job position in the form of a sentence, for example `CEO and Fou
 * Sales
 * Other
 
+
 In the example, `CEO and Founder` would return `Business`.
 Two algorithms are studied:  
 * [Stochastic gradient descent (SGD)](https://en.wikipedia.org/wiki/Stochastic_gradient_descent)
 * [Multi-layer Perceptron (MLP)](https://en.wikipedia.org/wiki/Multilayer_perceptron)
+
+There is an analogous project but it classifies according to the level of the position: [Classification of job positions by level](https://github.com/rootstrap/ai-job-title-level-classification).
 
 
 ## Implementation
