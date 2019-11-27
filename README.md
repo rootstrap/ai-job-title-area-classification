@@ -17,7 +17,7 @@ There is an analogous project but it classifies according to the level of the po
 
 
 ## Implementation
-This project is programed using the [Python language](https://www.python.org). The trained classifiers are implemented in the [Scikit Learn library](https://scikit-learn.org), a set of tools for machine learning in Python.
+This project is programed using the [Python language](https://www.python.org). The trained classifiers are implemented in the [Scikit Learn library](https://scikit-learn.org), a set of tools for machine learning in Python. If you use pip and virtual environments, you can install easily the named library: `$pip install -r requirements.txt`.
 
 ## Process data
 Since both algorithms belong to supervised learning, they are trained using manually classified data, that you can see on `data_process/data_sets/classified_titles.tsv`. That is a tab-separated-values file, that has two columns in the form:  
