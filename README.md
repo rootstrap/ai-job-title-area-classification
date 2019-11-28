@@ -42,7 +42,7 @@ Once the best parameters are found, it's possible to get the classifier. The gen
 So, starting from a `.tsv` with labelled sentences, we build a mlp and sgd classifier. The steps are:
 1. Run `data_process/tsv_file_to_list.py` to transform the table into lists.
 2. Run `data_process/normalize_list.py` to normalize the list, and transform the labels into integers.
-3. Run `tuning_mlp_classifier.py` and `tuning_sgd_classifier.py` to find the best params for each algorithm.
+3. Run `tuning_mlp_classifier.py` and `tuning_sgd_classifier.py` to find the best params for each algorithm (it may take a while, a few hours in the case of mlp).
 4. Run `mlp_classifier.py` and `sgd_classifier.py` to fit the classifiers, run the tests, and store the results of the classification of new data, to see how it works. Finally, each classifier is dumped using pickle, in a file with its corresponding name. To load the instance, you can execute:  
 ```
 with open('sgd.pkl', 'rb') as sgdfile:
@@ -56,30 +56,30 @@ These are the results of each classifier:
 ```
                 precision    recall  f1-score   support
 
-       Sales       1.00      0.86      0.92         7
-   Technical       0.82      0.90      0.86        20
-    Business       0.91      0.90      0.90        78
-   Marketing       1.00      0.82      0.90        11
-       Other       0.78      0.82      0.80        34
+       Sales       1.00      1.00      1.00         5
+   Technical       0.94      0.73      0.82        22
+    Business       0.79      0.94      0.86        65
+   Marketing       1.00      0.78      0.88         9
+       Other       0.86      0.78      0.82        49
 
-    accuracy                           0.87       150
-   macro avg       0.90      0.86      0.88       150
-weighted avg       0.88      0.87      0.87       150
+    accuracy                           0.85       150
+   macro avg       0.92      0.84      0.87       150
+weighted avg       0.86      0.85      0.85       150
 ```
 
 ### SGD
 ```
                 precision    recall  f1-score   support
 
-       Sales       1.00      0.86      0.92         7
-   Technical       0.88      0.75      0.81        20
-    Business       0.83      0.92      0.87        78
-   Marketing       1.00      0.82      0.90        11
-       Other       0.74      0.68      0.71        34
+       Sales       1.00      1.00      1.00         5
+   Technical       0.88      0.68      0.77        22
+    Business       0.77      0.95      0.85        65
+   Marketing       0.88      0.78      0.82         9
+       Other       0.90      0.71      0.80        49
 
     accuracy                           0.83       150
-   macro avg       0.89      0.80      0.84       150
-weighted avg       0.84      0.83      0.83       150
+   macro avg       0.88      0.83      0.85       150
+weighted avg       0.84      0.83      0.82       150
 ```
 
-The f1 score is a good metric to evaluate the classifier. The closer to value 1, the better. Both classifiers have similar score, but in this case the neural network(mlp classifier) works better. It will adapt better to classify new incoming data.
+The f1 score is a good metric to evaluate the classifier. The closer to value 1, the better. Both classifiers have similar score, but in this case the neural network (mlp classifier) works better. It will adapt better to classify new incoming data.
