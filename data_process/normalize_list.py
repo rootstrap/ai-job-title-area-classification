@@ -18,4 +18,3 @@ with open('data_sets/normalized_and_classified_sentences.py', 'w') as file:
     file.write('classified_sentences = ')
     simplejson.dump(classified_sentences, file)
     file.close()
-

@@ -1,6 +1,6 @@
 # Classification of job positions by area
 This is a project to classify job positions using machine learning, more specifically, supervised learning. The main goal is to get a classifier
-that receives a job position in the form of a sentence, for example `CEO and Founder` and returns the job area for that position. The different areas (labels for the classification) are:  
+that receives a job position in the form of a sentence, written in natural language, for example `CEO and Founder` and returns the job area for that position. The different areas (labels for the classification) are:  
 * Business
 * Technical
 * Marketing
@@ -9,7 +9,7 @@ that receives a job position in the form of a sentence, for example `CEO and Fou
 
 
 In the example, `CEO and Founder` would return `Business`.
-Two algorithms are studied:  
+Two classifiers are studied:  
 * [Stochastic gradient descent (SGD)](https://en.wikipedia.org/wiki/Stochastic_gradient_descent)
 * [Multi-layer Perceptron (MLP)](https://en.wikipedia.org/wiki/Multilayer_perceptron)
 
@@ -20,17 +20,22 @@ There is an analogous project but it classifies according to the level of the po
 This project is programed using the [Python language](https://www.python.org). The trained classifiers are implemented in the [Scikit Learn library](https://scikit-learn.org), a set of tools for machine learning in Python. If you use pip and virtual environments, you can install easily the named library: `$pip install -r requirements.txt`.
 
 ## Process data
-Since both algorithms belong to supervised learning, they are trained using manually classified data, that you can see on `data_process/data_sets/classified_titles.tsv`. That is a tab-separated-values file, that has two columns in the form:  
+Since both classifiers belong to supervised learning, they are trained using manually classified data, that you can see on `data_process/data_sets/classified_titles.tsv`. That is a tab-separated-values file, that has two columns in the form:  
 `<job position> | <classification for the job position>`.  
 The script `data_process/tsv_file_to_list.py` takes the `tsv` file and creates a list where each element has the form `[position, classification]`.  
 The script `data_process/normalize_list.py` takes the named list, and separates it into two new lists: one for the sentences normalized according a defined criteria, and other with the corresponding classification for those sentences. The new lists are stored with the names `normalized_sentences` and `classified_sentences` respectively. To summarize, `normalized_sentences[i]` is the i-th sentence after the normalization, and `classified_sentences[i]` is the corresponding classification.
 
-## Training, testing, tuning
-We have now the normalized sentences and the corresponding classification for each sentence. The next thing to do is to split those lists in sets for training (`X_train`, `y_train`) and testing (`X_test`, `y_test`), in order to train the classifier, and to measure the results. This is defined in `train_and_test_definition.py`.  
-A classifier has different parameters that are used in its algorithm. It's possible to vary those parameters in order to achieve the bests results in the classification. For each one there is a script named `tuning_<name>_classifier.py` that uses [`Pipeline`](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html), and [`GridSearchCV`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) in order to make exhaustive search to achieve the bests values for the parameters. After that, the combined values that maximize the results, are stored in the `best_params_<name>.py` file.
+## Training, tuning, testing
+We have now the normalized sentences and the corresponding classification for each sentence. The next thing to do is to split those lists in sets for training (`X_train`, `y_train`) and testing (`X_test`, `y_test`), in order to fit and tune the classifier, and to measure the results. This is defined in `train_and_test_definition.py`.  
+A classifier has:  
+* parameters: values that corresponds to the mathematical model, that are adjusted after the training.
+* hyper-parameters: values related to the way of training, that are adjusted using a selected part of the training set.  
+
+It's possible to use a `fit` function to train and adjust the params. Besides, scikit learn provides a tool named
+ [`Pipeline`](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html), and [`GridSearchCV`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) in order to make exhaustive search to achieve the hyperparams that optimizes the results.
 
 ## General process
-Once the best parameters are found, it's possible to get the classifier. The general process, used for both classifiers is:  
+The general process, used for both classifiers is:  
 * Use `CountVectorizer` that builds a dictionary of features and transforms documents (in this case, sentences) to feature vectors:  
   * `X_train_counts = CountVectorizer(X_train)`.
 * Use `TfidfTransformer` that takes into account the frequency of the words inside the sentences:
@@ -38,16 +43,14 @@ Once the best parameters are found, it's possible to get the classifier. The gen
 * Create the classifier `clf` with the best parameters, and fit it:
   * `clf.fit(X_train_tfidf, y_train)`.
 
-## Summary
-So, starting from a `.tsv` with labelled sentences, we build a mlp and sgd classifier. The steps are:
+## Script execution
+The steps are the same as the classification by area:
 1. Run `data_process/tsv_file_to_list.py` to transform the table into lists.
 2. Run `data_process/normalize_list.py` to normalize the list, and transform the labels into integers.
-3. Run `tuning_mlp_classifier.py` and `tuning_sgd_classifier.py` to find the best params for each algorithm (it may take a while, a few hours in the case of mlp).
-4. Run `mlp_classifier.py` and `sgd_classifier.py` to fit the classifiers, run the tests, and store the results of the classification of new data, to see how it works. Finally, each classifier is dumped using pickle, in a file with its corresponding name. To load the instance, you can execute:  
-```
-with open('sgd.pkl', 'rb') as sgdfile:
-    sgd_loaded = pickle.load(sgdfile)
-```
+3. Run `<clf name>_fit_tune_classifier.py` to fit and tune the classifier. `fit` is to learn and fit the model to the train set, and `tune` is to search for the optimal combination of the hyperparams, the ones that achieves better results(tuning may take a while).
+4. Run `<clf name>_test_classifier.py` to test the trained classifiers and show the results. Besides, a classified example set is stored in `test_data/<clf name>_results.tsv`.
+
+Note: `<clf name>` can be `mlp` or `sgd`, depending on the classifier.
 
 ## Results
 These are the results of each classifier:  
