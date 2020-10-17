@@ -1,4 +1,4 @@
-# Classification of job positions by area
+#                           Classification of Job Positions by an Area
 This is a project to classify job positions using machine learning, more specifically, supervised learning. The main goal is to get a classifier
 that receives a job position in the form of a sentence, written in natural language, for example `CEO and Founder` and returns the job area for that position. The different areas (labels for the classification) are:  
 * Business
